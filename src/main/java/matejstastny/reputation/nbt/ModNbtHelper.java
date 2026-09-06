@@ -1,4 +1,4 @@
-package atonkish.reputation.nbt;
+package matejstastny.reputation.nbt;
 
 import java.util.UUID;
 

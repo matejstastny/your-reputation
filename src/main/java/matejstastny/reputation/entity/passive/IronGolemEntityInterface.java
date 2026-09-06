@@ -1,4 +1,4 @@
-package atonkish.reputation.entity.passive;
+package matejstastny.reputation.entity.passive;
 
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;

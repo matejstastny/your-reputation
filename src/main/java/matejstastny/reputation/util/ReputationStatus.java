@@ -1,10 +1,10 @@
-package atonkish.reputation.util;
+package matejstastny.reputation.util;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Formatting;
 
-import atonkish.reputation.ReputationMod;
+import matejstastny.reputation.ReputationMod;
 
 public enum ReputationStatus {
     FRIENDLY("friendly", Formatting.DARK_GREEN),

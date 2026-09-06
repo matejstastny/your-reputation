@@ -1,4 +1,4 @@
-package atonkish.reputation.util.cache;
+package matejstastny.reputation.util.cache;
 
 import java.util.HashMap;
 import java.util.Map;

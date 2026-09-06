@@ -1,4 +1,4 @@
-package atonkish.reputation.provider;
+package matejstastny.reputation.provider;
 
 import java.util.Optional;
 
@@ -20,9 +20,9 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
-import atonkish.reputation.ReputationMod;
-import atonkish.reputation.util.ReputationStatus;
-import atonkish.reputation.util.cache.VillagerCache;
+import matejstastny.reputation.ReputationMod;
+import matejstastny.reputation.util.ReputationStatus;
+import matejstastny.reputation.util.cache.VillagerCache;
 
 public class VillagerReputationProvider implements IServerDataProvider<EntityAccessor> {
     public static final VillagerReputationProvider INSTANCE = new VillagerReputationProvider();

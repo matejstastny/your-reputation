@@ -1,4 +1,4 @@
-package atonkish.reputation.mixin;
+package matejstastny.reputation.mixin;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import atonkish.reputation.entity.passive.IronGolemEntityInterface;
+import matejstastny.reputation.entity.passive.IronGolemEntityInterface;
 
 @Mixin(TrackIronGolemTargetGoal.class)
 public class TrackIronGolemTargetGoalMixin {

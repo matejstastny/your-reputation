@@ -1,4 +1,4 @@
-package atonkish.reputation;
+package matejstastny.reputation;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.IronGolemEntity;
@@ -11,9 +11,9 @@ import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.JadeIds;
 import snownee.jade.api.WailaPlugin;
 
-import atonkish.reputation.provider.IronGolemProvider;
-import atonkish.reputation.provider.VillagerReputationProvider;
-import atonkish.reputation.provider.VillagerSnitchProvider;
+import matejstastny.reputation.provider.IronGolemProvider;
+import matejstastny.reputation.provider.VillagerReputationProvider;
+import matejstastny.reputation.provider.VillagerSnitchProvider;
 
 @WailaPlugin
 public class ReputationPlugin implements IWailaPlugin {

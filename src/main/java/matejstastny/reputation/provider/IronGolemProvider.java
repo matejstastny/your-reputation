@@ -1,4 +1,4 @@
-package atonkish.reputation.provider;
+package matejstastny.reputation.provider;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -23,9 +23,9 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
-import atonkish.reputation.ReputationMod;
-import atonkish.reputation.nbt.ModNbtHelper;
-import atonkish.reputation.util.cache.IronGolemCache;
+import matejstastny.reputation.ReputationMod;
+import matejstastny.reputation.nbt.ModNbtHelper;
+import matejstastny.reputation.util.cache.IronGolemCache;
 
 public class IronGolemProvider implements IServerDataProvider<EntityAccessor> {
     public static final IronGolemProvider INSTANCE = new IronGolemProvider();

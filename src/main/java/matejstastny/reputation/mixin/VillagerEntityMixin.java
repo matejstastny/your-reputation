@@ -1,4 +1,4 @@
-package atonkish.reputation.mixin;
+package matejstastny.reputation.mixin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import atonkish.reputation.entity.passive.VillagerEntityInterface;
+import matejstastny.reputation.entity.passive.VillagerEntityInterface;
 
 @Mixin(VillagerEntity.class)
 public class VillagerEntityMixin implements VillagerEntityInterface {

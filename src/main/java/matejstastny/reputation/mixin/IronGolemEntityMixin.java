@@ -1,4 +1,4 @@
-package atonkish.reputation.mixin;
+package matejstastny.reputation.mixin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import atonkish.reputation.entity.passive.IronGolemEntityInterface;
-import atonkish.reputation.entity.passive.VillagerEntityInterface;
+import matejstastny.reputation.entity.passive.IronGolemEntityInterface;
+import matejstastny.reputation.entity.passive.VillagerEntityInterface;
 
 @Mixin(IronGolemEntity.class)
 public abstract class IronGolemEntityMixin implements Angerable, IronGolemEntityInterface {
