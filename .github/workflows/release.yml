@@ -1,0 +1,61 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - "v*"
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: "Tag to release (v0.2.14+jade.1.21.11)"
+                required: true
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Resolve tag
+              id: tag
+              run: |
+                  TAG="${{ github.event.inputs.tag || github.ref_name }}"
+                  MOD_VERSION="${TAG#v}"
+                  echo "tag=$TAG"                 >> $GITHUB_OUTPUT
+                  echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
+
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ steps.tag.outputs.tag }}
+
+            - name: Extract changelog
+              id: changelog
+              run: |
+                  VERSION="${{ steps.tag.outputs.mod_version }}"
+                  NOTES=$(awk -v ver="$VERSION" '
+                    /^## \[/ { if (flag) exit; if (index($0, "## [" ver "]") == 1) flag=1; next }
+                    flag { print }
+                  ' CHANGELOG.md)
+                  echo "notes<<EOF" >> $GITHUB_OUTPUT
+                  printf '%s\n' "$NOTES" >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+
+            - uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: 21
+                  cache: gradle
+
+            - name: Build
+              run: ./gradlew build --no-daemon
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ steps.tag.outputs.tag }}
+                  name: "Your Reputation ${{ steps.tag.outputs.tag }}"
+                  body: ${{ steps.changelog.outputs.notes }}
+                  files: |
+                      build/libs/*.jar
+                      !build/libs/*-dev.jar
