@@ -1,9 +1,5 @@
-[![Mod Loader: Fabric](https://img.shields.io/static/v1?label=modloader&message=fabric&color=brightgreen)](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-![Mod Environment](https://img.shields.io/static/v1?label=environment&message=client%2Fserver&color=yellow)
-![Version](https://cf.way2muchnoise.eu/versions/579757.svg)
-[![CurseForge](https://cf.way2muchnoise.eu/579757.svg)](https://www.curseforge.com/minecraft/mc-mods/your-reputation)
-[![Modrinth](https://img.shields.io/modrinth/dt/MrLyhFlg?color=%2300AF5C&logo=modrinth)](https://modrinth.com/mod/your-reputation)
-[![MIT License](https://img.shields.io/static/v1?label=licence&message=MIT&color=blue)](./LICENSE)
+> [!NOTE]
+> This is a fork of [AtonKish/your-reputation](https://github.com/Aton-Kish/your-reputation) as the author of that mod stopped developing it past 1.21.4 and does not respond to PR's/issues. I am also only maintaining this mod only for Jade as that is relevant to me.
 
 # Your Reputation
 
