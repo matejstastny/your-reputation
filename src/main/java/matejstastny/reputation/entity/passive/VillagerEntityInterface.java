@@ -1,9 +1,9 @@
 package matejstastny.reputation.entity.passive;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface VillagerEntityInterface {
-    public boolean isSnitch(PlayerEntity player);
+    public boolean isSnitch(Player player);
 
-    public void setIsSnitch(PlayerEntity player, boolean isSnitch);
+    public void setIsSnitch(Player player, boolean isSnitch);
 }

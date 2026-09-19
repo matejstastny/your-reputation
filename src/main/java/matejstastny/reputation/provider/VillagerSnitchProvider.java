@@ -6,13 +6,13 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.cache.Cache;
 
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
 
 import snownee.jade.Jade;
 import snownee.jade.api.EntityAccessor;
@@ -30,7 +30,7 @@ import matejstastny.reputation.util.cache.VillagerCache;
 public class VillagerSnitchProvider implements IServerDataProvider<EntityAccessor> {
     public static final VillagerSnitchProvider INSTANCE = new VillagerSnitchProvider();
 
-    public static final Identifier VILLAGER_SNITCH_IDENTIFIER = Identifier.of(ReputationMod.MOD_ID, "villager_snitch");
+    public static final Identifier VILLAGER_SNITCH_IDENTIFIER = Identifier.fromNamespaceAndPath(ReputationMod.MOD_ID, "villager_snitch");
     public static final String IS_SNITCH_KEY = "ReputationModIsSnitch";
 
     @Override
@@ -39,9 +39,9 @@ public class VillagerSnitchProvider implements IServerDataProvider<EntityAccesso
     }
 
     @Override
-    public final void appendServerData(NbtCompound data, EntityAccessor accessor) {
-        PlayerEntity player = accessor.getPlayer();
-        VillagerEntity villager = (VillagerEntity) accessor.getEntity();
+    public final void appendServerData(CompoundTag data, EntityAccessor accessor) {
+        Player player = accessor.getPlayer();
+        Villager villager = (Villager) accessor.getEntity();
 
         boolean isSnitch = ((VillagerEntityInterface) villager).isSnitch(player);
         data.putBoolean(VillagerSnitchProvider.IS_SNITCH_KEY, isSnitch);
@@ -62,9 +62,9 @@ public class VillagerSnitchProvider implements IServerDataProvider<EntityAccesso
 
         @Override
         public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig config) {
-            NbtCompound data = accessor.getServerData();
-            PlayerEntity player = accessor.getPlayer();
-            VillagerEntity villager = (VillagerEntity) accessor.getEntity();
+            CompoundTag data = accessor.getServerData();
+            Player player = accessor.getPlayer();
+            Villager villager = (Villager) accessor.getEntity();
 
             VillagerCache.Data villagerData = this.getVillagerData(data, player, villager);
 
@@ -72,17 +72,17 @@ public class VillagerSnitchProvider implements IServerDataProvider<EntityAccesso
 
             String name = Optional
                     .ofNullable(villager.getCustomName())
-                    .orElse(villager.getType().getName())
+                    .orElse(villager.getType().getDescription())
                     .getString();
 
-            Text text = wailaConfig.formatting().registryName(name);
+            Component text = wailaConfig.formatting().registryName(name);
             if (villagerData.isSnitch()) {
                 String snitchTranslateKey = String.format("entity.%s.villager.snitch",
                         ReputationMod.MOD_ID);
-                MutableText mText = Text.empty();
-                mText = mText.append(text.copy().formatted(Formatting.STRIKETHROUGH));
+                MutableComponent mText = Component.empty();
+                mText = mText.append(text.copy().withStyle(ChatFormatting.STRIKETHROUGH));
                 mText = mText.append(" ");
-                mText = mText.append(Text.translatable(snitchTranslateKey).formatted(Formatting.DARK_RED));
+                mText = mText.append(Component.translatable(snitchTranslateKey).withStyle(ChatFormatting.DARK_RED));
 
                 text = mText;
             }
@@ -90,8 +90,8 @@ public class VillagerSnitchProvider implements IServerDataProvider<EntityAccesso
             tooltip.add(text);
         }
 
-        private VillagerCache.Data getVillagerData(NbtCompound data, PlayerEntity player, VillagerEntity villager) {
-            Cache<VillagerEntity, VillagerCache.Data> villagerCache = VillagerCache.getOrCreate(player);
+        private VillagerCache.Data getVillagerData(CompoundTag data, Player player, Villager villager) {
+            Cache<Villager, VillagerCache.Data> villagerCache = VillagerCache.getOrCreate(player);
             VillagerCache.Data villagerData = Optional
                     .ofNullable(villagerCache.getIfPresent(villager))
                     .orElse(new VillagerCache.Data());

@@ -5,23 +5,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-
 import org.spongepowered.asm.mixin.Mixin;
+
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
 
 import matejstastny.reputation.entity.passive.IronGolemEntityInterface;
 import matejstastny.reputation.entity.passive.VillagerEntityInterface;
 
-@Mixin(IronGolemEntity.class)
-public abstract class IronGolemEntityMixin implements Angerable, IronGolemEntityInterface {
-    private Map<PlayerEntity, Set<VillagerEntity>> harmReports = new HashMap<>();
+@Mixin(IronGolem.class)
+public abstract class IronGolemEntityMixin implements NeutralMob, IronGolemEntityInterface {
+    private Map<Player, Set<Villager>> harmReports = new HashMap<>();
 
-    public boolean addReport(PlayerEntity player, VillagerEntity villager) {
+    public boolean addReport(Player player, Villager villager) {
         if (!harmReports.containsKey(player)) {
-            Set<VillagerEntity> victims = new HashSet<>();
+            Set<Villager> victims = new HashSet<>();
             harmReports.put(player, victims);
         }
 
@@ -30,19 +30,19 @@ public abstract class IronGolemEntityMixin implements Angerable, IronGolemEntity
     }
 
     public void clearReports() {
-        for (PlayerEntity player : this.harmReports.keySet()) {
-            for (VillagerEntity villager : this.harmReports.get(player)) {
+        for (Player player : this.harmReports.keySet()) {
+            for (Villager villager : this.harmReports.get(player)) {
                 ((VillagerEntityInterface) villager).setIsSnitch(player, false);
             }
         }
         this.harmReports.clear();
     }
 
-    public void stopAnger() {
-        this.setAttacker(null);
-        this.setAngryAt(null);
+    public void stopBeingAngry() {
+        this.setLastHurtByMob(null);
+        this.setPersistentAngerTarget(null);
         this.setTarget(null);
-        this.setAngerEndTime(Angerable.NO_ANGER_END_TIME);
+        this.setPersistentAngerEndTime(NeutralMob.NO_ANGER_END_TIME);
         this.clearReports();
     }
 }

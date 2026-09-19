@@ -2,22 +2,22 @@ package matejstastny.reputation.util;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
 
 import matejstastny.reputation.ReputationMod;
 
 public enum ReputationStatus {
-    FRIENDLY("friendly", Formatting.DARK_GREEN),
-    TRUSTWORTHY("trustworthy", Formatting.GREEN),
-    NEUTRAL("neutral", Formatting.GRAY),
-    SUSPICIOUS("suspicious", Formatting.RED),
-    HOSTILE("hostile", Formatting.DARK_RED),
-    UNKNOWN("unknown", Formatting.DARK_GRAY);
+    FRIENDLY("friendly", ChatFormatting.DARK_GREEN),
+    TRUSTWORTHY("trustworthy", ChatFormatting.GREEN),
+    NEUTRAL("neutral", ChatFormatting.GRAY),
+    SUSPICIOUS("suspicious", ChatFormatting.RED),
+    HOSTILE("hostile", ChatFormatting.DARK_RED),
+    UNKNOWN("unknown", ChatFormatting.DARK_GRAY);
 
     private final String translateKey;
-    private final Formatting formatting;
+    private final ChatFormatting formatting;
 
-    private ReputationStatus(String status, Formatting formatting) {
+    private ReputationStatus(String status, ChatFormatting formatting) {
         this.translateKey = String.format("entity.%s.villager.reputation.%s", ReputationMod.MOD_ID, status);
         this.formatting = formatting;
     }
@@ -42,7 +42,7 @@ public enum ReputationStatus {
         return this.translateKey;
     }
 
-    public Formatting getFormatting() {
+    public ChatFormatting getFormatting() {
         return this.formatting;
     }
 }

@@ -7,14 +7,14 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.cache.Cache;
 
-import net.minecraft.entity.LazyEntityReference;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.player.Player;
 
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
@@ -30,7 +30,7 @@ import matejstastny.reputation.util.cache.IronGolemCache;
 public class IronGolemProvider implements IServerDataProvider<EntityAccessor> {
     public static final IronGolemProvider INSTANCE = new IronGolemProvider();
 
-    public static final Identifier IRON_GOLEM_IDENTIFIER = Identifier.of(ReputationMod.MOD_ID, "iron_golem");
+    public static final Identifier IRON_GOLEM_IDENTIFIER = Identifier.fromNamespaceAndPath(ReputationMod.MOD_ID, "iron_golem");
     public static final String ANGRY_AT_KEY = "ReputationModAngryAt";
 
     @Override
@@ -39,13 +39,13 @@ public class IronGolemProvider implements IServerDataProvider<EntityAccessor> {
     }
 
     @Override
-    public final void appendServerData(NbtCompound data, EntityAccessor accessor) {
-        IronGolemEntity golem = (IronGolemEntity) accessor.getEntity();
+    public final void appendServerData(CompoundTag data, EntityAccessor accessor) {
+        IronGolem golem = (IronGolem) accessor.getEntity();
 
         @Nullable
-        LazyEntityReference angryAtRef = golem.getAngryAt();
+        EntityReference angryAtRef = golem.getPersistentAngerTarget();
         if (angryAtRef != null) {
-            data.put(IronGolemProvider.ANGRY_AT_KEY, ModNbtHelper.fromUuid(angryAtRef.getUuid()));
+            data.put(IronGolemProvider.ANGRY_AT_KEY, ModNbtHelper.fromUuid(angryAtRef.getUUID()));
         }
     }
 
@@ -64,24 +64,24 @@ public class IronGolemProvider implements IServerDataProvider<EntityAccessor> {
 
         @Override
         public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig config) {
-            NbtCompound data = accessor.getServerData();
-            PlayerEntity player = accessor.getPlayer();
-            IronGolemEntity golem = (IronGolemEntity) accessor.getEntity();
+            CompoundTag data = accessor.getServerData();
+            Player player = accessor.getPlayer();
+            IronGolem golem = (IronGolem) accessor.getEntity();
 
             IronGolemCache.Data golemData = this.getIronGolemData(data, player, golem);
 
             @Nullable
             UUID angryAt = golemData.getAngryAt();
 
-            if (player.getUuid().equals(angryAt)) {
+            if (player.getUUID().equals(angryAt)) {
                 String angryTranslateKey = String.format("entity.%s.iron_golem.angry", ReputationMod.MOD_ID);
-                MutableText text = Text.translatable(angryTranslateKey).formatted(Formatting.DARK_RED);
+                MutableComponent text = Component.translatable(angryTranslateKey).withStyle(ChatFormatting.DARK_RED);
                 tooltip.add(text);
             }
         }
 
-        private IronGolemCache.Data getIronGolemData(NbtCompound data, PlayerEntity player, IronGolemEntity golem) {
-            Cache<IronGolemEntity, IronGolemCache.Data> golemCache = IronGolemCache.getOrCreate(player);
+        private IronGolemCache.Data getIronGolemData(CompoundTag data, Player player, IronGolem golem) {
+            Cache<IronGolem, IronGolemCache.Data> golemCache = IronGolemCache.getOrCreate(player);
             IronGolemCache.Data golemData = Optional
                     .ofNullable(golemCache.getIfPresent(golem))
                     .orElse(new IronGolemCache.Data());

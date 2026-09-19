@@ -8,15 +8,15 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
 
 public class VillagerCache {
-    private static final Map<PlayerEntity, Cache<VillagerEntity, VillagerCache.Data>> VILLAGER_CACHE_MAP = new HashMap<>();
+    private static final Map<Player, Cache<Villager, VillagerCache.Data>> VILLAGER_CACHE_MAP = new HashMap<>();
 
-    public static Cache<VillagerEntity, VillagerCache.Data> getOrCreate(PlayerEntity player) {
+    public static Cache<Villager, VillagerCache.Data> getOrCreate(Player player) {
         if (!VillagerCache.VILLAGER_CACHE_MAP.containsKey(player)) {
-            Cache<VillagerEntity, VillagerCache.Data> cache = CacheBuilder
+            Cache<Villager, VillagerCache.Data> cache = CacheBuilder
                     .newBuilder()
                     .maximumSize(CacheConfig.MAXIMUM_CACHE_SIZE)
                     .build();

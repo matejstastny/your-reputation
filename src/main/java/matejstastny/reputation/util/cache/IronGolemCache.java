@@ -9,15 +9,15 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.player.Player;
 
 public class IronGolemCache {
-    private static final Map<PlayerEntity, Cache<IronGolemEntity, IronGolemCache.Data>> IRON_GOLEM_CACHE_MAP = new HashMap<>();
+    private static final Map<Player, Cache<IronGolem, IronGolemCache.Data>> IRON_GOLEM_CACHE_MAP = new HashMap<>();
 
-    public static Cache<IronGolemEntity, IronGolemCache.Data> getOrCreate(PlayerEntity player) {
+    public static Cache<IronGolem, IronGolemCache.Data> getOrCreate(Player player) {
         if (!IronGolemCache.IRON_GOLEM_CACHE_MAP.containsKey(player)) {
-            Cache<IronGolemEntity, IronGolemCache.Data> cache = CacheBuilder
+            Cache<IronGolem, IronGolemCache.Data> cache = CacheBuilder
                     .newBuilder()
                     .maximumSize(CacheConfig.MAXIMUM_CACHE_SIZE)
                     .build();

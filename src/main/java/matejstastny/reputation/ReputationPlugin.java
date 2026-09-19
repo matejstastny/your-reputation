@@ -1,8 +1,8 @@
 package matejstastny.reputation;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.npc.villager.Villager;
 
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IWailaClientRegistration;
@@ -19,21 +19,21 @@ import matejstastny.reputation.provider.VillagerSnitchProvider;
 public class ReputationPlugin implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerEntityDataProvider(IronGolemProvider.INSTANCE, IronGolemEntity.class);
-        registration.registerEntityDataProvider(VillagerReputationProvider.INSTANCE, VillagerEntity.class);
-        registration.registerEntityDataProvider(VillagerSnitchProvider.INSTANCE, VillagerEntity.class);
+        registration.registerEntityDataProvider(IronGolemProvider.INSTANCE, IronGolem.class);
+        registration.registerEntityDataProvider(VillagerReputationProvider.INSTANCE, Villager.class);
+        registration.registerEntityDataProvider(VillagerSnitchProvider.INSTANCE, Villager.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerEntityComponent(IronGolemProvider.Client.INSTANCE, IronGolemEntity.class);
-        registration.registerEntityComponent(VillagerReputationProvider.Client.INSTANCE, VillagerEntity.class);
-        registration.registerEntityComponent(VillagerSnitchProvider.Client.INSTANCE, VillagerEntity.class);
+        registration.registerEntityComponent(IronGolemProvider.Client.INSTANCE, IronGolem.class);
+        registration.registerEntityComponent(VillagerReputationProvider.Client.INSTANCE, Villager.class);
+        registration.registerEntityComponent(VillagerSnitchProvider.Client.INSTANCE, Villager.class);
 
         registration.addTooltipCollectedCallback((rootElement, accessor) -> {
             if (accessor instanceof EntityAccessor entityAccessor) {
                 Entity entity = entityAccessor.getEntity();
-                if (entity instanceof VillagerEntity) {
+                if (entity instanceof Villager) {
                     rootElement.getTooltip().remove(JadeIds.CORE_OBJECT_NAME);
                 }
             }
