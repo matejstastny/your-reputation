@@ -6,18 +6,20 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROPS="$ROOT/gradle.properties"
 CHANGELOG="$ROOT/CHANGELOG.md"
 
+MC_VERSION=$(grep -E '^[[:space:]]*minecraft_version=' "$PROPS" | cut -d= -f2)
 CURRENT_MOD_VERSION=$(grep -E '^[[:space:]]*mod_version=' "$PROPS" | cut -d= -f2)
 
+echo "Minecraft version  : $MC_VERSION"
 echo "Current mod version: $CURRENT_MOD_VERSION"
 echo ""
-read -rp "New mod version (e.g. 0.2.14+jade.1.21.11): " NEW_MOD_VERSION
+read -rp "New mod version: " NEW_MOD_VERSION
 
 if [[ -z "$NEW_MOD_VERSION" ]]; then
 	echo "Aborted: no version entered."
 	exit 1
 fi
 
-TAG="v${NEW_MOD_VERSION}"
+TAG="v${NEW_MOD_VERSION}+${MC_VERSION}"
 
 # Read content under ## [Current]
 CHANGELOG_CONTENT=$(awk '

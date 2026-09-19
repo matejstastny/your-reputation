@@ -21,9 +21,12 @@ jobs:
               id: tag
               run: |
                   TAG="${{ github.event.inputs.tag || github.ref_name }}"
-                  MOD_VERSION="${TAG#v}"
+                  WITHOUT_V="${TAG#v}"
+                  MOD_VERSION="${WITHOUT_V%%+*}"
+                  MC_VERSION="${WITHOUT_V##*+}"
                   echo "tag=$TAG"                 >> $GITHUB_OUTPUT
                   echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
+                  echo "mc_version=$MC_VERSION"   >> $GITHUB_OUTPUT
 
             - uses: actions/checkout@v4
               with:
@@ -54,7 +57,7 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                   tag_name: ${{ steps.tag.outputs.tag }}
-                  name: "Your Reputation ${{ steps.tag.outputs.tag }}"
+                  name: "Your Reputation v${{ steps.tag.outputs.mod_version }} for MC ${{ steps.tag.outputs.mc_version }}"
                   body: ${{ steps.changelog.outputs.notes }}
                   files: |
                       build/libs/*.jar
